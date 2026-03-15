@@ -16,6 +16,7 @@ app.use(
             "http://127.0.0.1:8080",
             "http://localhost:5173",
             "http://127.0.0.1:5173",
+            "https://breathway-git-test-joe994765-3661s-projects.vercel.app"
         ],
         credentials: true,
     })
@@ -34,22 +35,31 @@ if (!MONGODB_URI) {
     // Fail fast to help diagnose missing env
     // eslint-disable-next-line no-console
     console.error("Missing MONGODB_URI in environment variables");
-    process.exit(1);
+    if (!process.env.VERCEL) {
+        process.exit(1);
+    }
 }
 
 mongoose
     .connect(MONGODB_URI)
     .then(() => {
-        app.listen(PORT, () => {
-            // eslint-disable-next-line no-console
-            console.log(`API listening on http://localhost:${PORT}`);
-        });
+        // eslint-disable-next-line no-console
+        console.log("Connected to MongoDB via mongoose");
     })
     .catch((err) => {
         // eslint-disable-next-line no-console
         console.error("Failed to connect to MongoDB", err);
-        process.exit(1);
+        if (!process.env.VERCEL) {
+            process.exit(1);
+        }
     });
+
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        // eslint-disable-next-line no-console
+        console.log(`API listening on http://localhost:${PORT}`);
+    });
+}
 
 export default app;
 
