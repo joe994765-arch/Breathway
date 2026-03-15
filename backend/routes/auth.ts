@@ -1,6 +1,6 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
-import User from "../schema/User";
+import User from "../schema/User.js";
 
 const router = Router();
 
@@ -65,7 +65,8 @@ router.post("/login", async (req, res) => {
 
         return res.json({ id: user._id, name: user.name, email: user.email });
     } catch (err) {
-        return res.status(500).json({ message: "Internal server error" });
+        console.error("AUTH ERROR:", err);
+        res.status(500).json({ error: err instanceof Error ? err.message : "Internal error" });
     }
 });
 
