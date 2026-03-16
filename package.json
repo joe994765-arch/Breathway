@@ -9,8 +9,9 @@
     "start:batch": "start_project.bat",
     "backend": "python app.py",
     "backend:install": "python -m pip install -r requirements.txt",
-    "build": "npx vite build",
-    "build:dev": "npx vite build --mode development",
+    "build": "node node_modules/vite/bin/vite.js build",
+    "build:dev": "node node_modules/vite/bin/vite.js build --mode development",
+
 
     "lint": "eslint .",
     "preview": "vite preview"
