@@ -4,7 +4,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock, TrendingUp, Calendar, Mail, User } from "lucide-react";
-import { apiService, RouteResponse } from "@/lib/api";
+import { apiService, RouteResponse, API_BASE_URL } from "@/lib/api";
+
 
 interface UserProfileProps {
     userEmail: string;
@@ -36,7 +37,8 @@ const UserProfile = ({ userEmail, routeData }: UserProfileProps) => {
         const fetchUserData = async () => {
             try {
                 // Fetch user data from MongoDB
-                const response = await fetch(`/api/user/${encodeURIComponent(userEmail)}`);
+                const response = await fetch(`${API_BASE_URL}/user/${encodeURIComponent(userEmail)}`);
+
                 if (response.ok) {
                     const data = await response.json();
                     setUserData(data.user);

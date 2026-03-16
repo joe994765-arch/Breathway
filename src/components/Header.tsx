@@ -1,4 +1,6 @@
 import { Leaf, MapPin, User, LogOut, Settings, UserCircle } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
+
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -22,7 +24,8 @@ const Header = () => {
       if (!email) return;
 
       try {
-        const response = await fetch(`/api/user/${email}`);
+        const response = await fetch(`${API_BASE_URL}/user/${email}`);
+
         if (response.ok) {
           const data = await response.json();
           setUserData(data.user);

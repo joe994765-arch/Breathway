@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Card } from "@/components/ui/card";
-import { RouteInfo } from "@/lib/api";
+import { RouteInfo, API_BASE_URL } from "@/lib/api";
+
 
 // Fix for default marker icons in leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -70,8 +71,9 @@ const MapView = ({ className, routes = [], selectedIndex = 0, onSelectRoute }: M
       try {
         const [geoRes, stateRes, cityRes] = await Promise.all([
           fetch("/india_states.geojson"),
-          fetch("/api/states/aqi"),
-          fetch("/api/cities/aqi")
+          fetch(`${API_BASE_URL}/states/aqi`),
+          fetch(`${API_BASE_URL}/cities/aqi`)
+
         ]);
 
         if (geoRes.ok) setGeoJsonData(await geoRes.json());

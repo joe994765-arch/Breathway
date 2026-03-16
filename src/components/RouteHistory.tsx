@@ -4,7 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Navigation2, Wind, Thermometer, MapPin, Calendar, Download } from "lucide-react";
-import { apiService, HistoryResponse, RouteInfo, RouteResponse } from "@/lib/api";
+import { apiService, HistoryResponse, RouteInfo, RouteResponse, API_BASE_URL } from "@/lib/api";
+
 
 interface RouteHistoryProps {
     userEmail: string;
@@ -95,7 +96,8 @@ const RouteHistory = ({ userEmail }: RouteHistoryProps) => {
 
     const handleDownload = async (format: 'csv' | 'pdf') => {
         try {
-            const response = await fetch(`/api/history/${encodeURIComponent(userEmail)}/download/${format}`);
+            const response = await fetch(`${API_BASE_URL}/history/${encodeURIComponent(userEmail)}/download/${format}`);
+
             if (response.ok) {
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);

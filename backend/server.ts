@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import authRouter from "./routes/auth.js";
+import authRouter from "./routes/auth";
 
 dotenv.config();
 
@@ -35,31 +35,22 @@ if (!MONGODB_URI) {
     // Fail fast to help diagnose missing env
     // eslint-disable-next-line no-console
     console.error("Missing MONGODB_URI in environment variables");
-    if (!process.env.VERCEL) {
-        process.exit(1);
-    }
+    process.exit(1);
 }
 
 mongoose
     .connect(MONGODB_URI)
     .then(() => {
-        // eslint-disable-next-line no-console
-        console.log("Connected to MongoDB via mongoose");
+        app.listen(PORT, () => {
+            // eslint-disable-next-line no-console
+            console.log(`API listening on http://localhost:${PORT}`);
+        });
     })
     .catch((err) => {
         // eslint-disable-next-line no-console
         console.error("Failed to connect to MongoDB", err);
-        if (!process.env.VERCEL) {
-            process.exit(1);
-        }
+        process.exit(1);
     });
-
-if (!process.env.VERCEL) {
-    app.listen(PORT, () => {
-        // eslint-disable-next-line no-console
-        console.log(`API listening on http://localhost:${PORT}`);
-    });
-}
 
 export default app;
 

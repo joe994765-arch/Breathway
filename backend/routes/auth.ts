@@ -1,7 +1,6 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
-import UserModel from "../schema/User.js";
-const User = UserModel as any; // Bypass TS2349 for mongoose models imported with .js
+import User from "../schema/User";
 
 const router = Router();
 

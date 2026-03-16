@@ -4,6 +4,8 @@ import { MapContainer, TileLayer, GeoJSON, Tooltip, useMap } from "react-leaflet
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Card } from "@/components/ui/card";
+import { API_BASE_URL } from "@/lib/api";
+
 
 // Fix for default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -36,7 +38,8 @@ const StateMap = () => {
                 setGeoJsonData(geoData);
 
                 // Fetch AQI Data from our backend
-                const aqiResponse = await fetch("/api/states/aqi");
+                const aqiResponse = await fetch(`${API_BASE_URL}/states/aqi`);
+
                 const aqiData = await aqiResponse.json();
                 if (aqiData.success) {
                     console.log("AQI Data loaded:", aqiData.states); // Debug log

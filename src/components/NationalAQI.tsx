@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { API_BASE_URL } from "@/lib/api";
+
 
 interface StateAQI {
     state: string;
@@ -17,7 +19,8 @@ const NationalAQI = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const aqiResponse = await fetch("/api/states/aqi");
+                const aqiResponse = await fetch(`${API_BASE_URL}/states/aqi`);
+
                 const aqiData = await aqiResponse.json();
                 if (aqiData.success) {
                     // Sort states alphabetically

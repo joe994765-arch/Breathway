@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Leaf } from "lucide-react";
 import { toast } from "sonner";
+import { API_BASE_URL } from "@/lib/api";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,7 +19,8 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -49,7 +52,8 @@ const Login = () => {
       return;
     }
     try {
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch(`${API_BASE_URL}/auth/signup`, {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
