@@ -1,6 +1,9 @@
 // API service for connecting to Flask backend
 // API service for connecting to Flask backend
-export const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const base = import.meta.env.VITE_API_URL || '';
+export const API_BASE_URL = base 
+  ? (base.endsWith('/api') ? base : `${base}/api`) 
+  : '/api';
 
 export interface WeatherData {
     city: string;

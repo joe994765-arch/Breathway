@@ -26,7 +26,7 @@ except Exception as e:
     ML_ENABLED = False
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/api/*": {"origins": ["https://*.vercel.app", "http://localhost:8080"]}})  # Enable CORS for all routes
 
 # MongoDB connection
 MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
