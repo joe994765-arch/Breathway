@@ -107,7 +107,8 @@ const RouteComparisonGrid = ({ routes, recommendedIndex, onRouteSelect, selected
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     {getRouteIcon(route.type)}
-                                    <h3 className="font-semibold text-lg">{getRouteLabel(route.type)}</h3>
+                                    <h3 className="font-semibold text-lg">Route {index + 1}</h3>
+                                    <span className="text-sm text-muted-foreground">({getRouteLabel(route.type)})</span>
                                 </div>
                                 {isRecommended && (
                                     <Badge variant="default" className="bg-primary">

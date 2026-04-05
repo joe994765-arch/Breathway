@@ -120,32 +120,7 @@ const About = () => {
             </div>
           </div>
 
-          {/* Technology Stack */}
-          <Card className="p-8 glass-card shadow-soft">
-            <h2 className="text-2xl font-bold mb-4">Technology Stack</h2>
-            <div className="space-y-3 text-muted-foreground">
-              <div className="flex items-center gap-3">
-                <div className="h-2 w-2 rounded-full bg-primary" />
-                <span><strong className="text-foreground">React.js</strong> - Modern, responsive user interface</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-2 w-2 rounded-full bg-secondary" />
-                <span><strong className="text-foreground">Leaflet.js</strong> - Interactive maps with route visualization</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-2 w-2 rounded-full bg-accent" />
-                <span><strong className="text-foreground">Chart.js</strong> - Beautiful data visualizations</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-2 w-2 rounded-full bg-primary" />
-                <span><strong className="text-foreground">MongoDB</strong> - Efficient data storage and retrieval</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-2 w-2 rounded-full bg-secondary" />
-                <span><strong className="text-foreground">Tailwind CSS</strong> - Modern, eco-friendly design system</span>
-              </div>
-            </div>
-          </Card>
+
 
 
         </div>

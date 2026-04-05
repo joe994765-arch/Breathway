@@ -196,7 +196,9 @@ def process_forecast_data(weather_list, aqi_list):
     forecast = []
     today = datetime.now().strftime("%Y-%m-%d")
     
-    for date, data in daily_data.items():
+    last_known_aqi = 50 # Default fallback
+    
+    for date, data in sorted(daily_data.items()):
         if date == today: continue # Skip partial today data if desired, or keep
         
         if not data["temps"]: continue
@@ -204,10 +206,17 @@ def process_forecast_data(weather_list, aqi_list):
         # Most frequent weather condition
         main_condition = max(data["weather"].items(), key=lambda x: x[1])[0]
         
-        avg_aqi = 0
         if data["aqi"]:
             avg_aqi = round(sum(data["aqi"]) / len(data["aqi"]))
+            last_known_aqi = avg_aqi
+        else:
+            avg_aqi = last_known_aqi
             
+        # Fix hourly zeroes if data was missing
+        for hour in data["hourly"]:
+            if hour["aqi"] == 0:
+                hour["aqi"] = avg_aqi
+                
         forecast.append({
             "date": date,
             "day_name": datetime.strptime(date, "%Y-%m-%d").strftime("%A"),
@@ -429,18 +438,20 @@ def get_multiple_routes(src, dest, mode="driving-car", include_traffic=True):
 
     # Strategy 3: Forced Detour (if we still don't have enough distinct routes)
     # This ensures "Real Data" difference by forcing a path through a different coordinate
-    if len(raw_routes) < 2:
-        print("Strategy 3: Routes are identical. Generating a forced detour to ensure variety...")
+    if len(raw_routes) < 3:
+        print("Strategy 3: Not enough distinct routes. Generating forced detours to ensure variety...")
         
         # Calculate a detour point (midpoint + offset)
         mid_lat = (src["lat"] + dest["lat"]) / 2
         mid_lon = (src["lon"] + dest["lon"]) / 2
         
-        # Offset by ~20km (approx 0.2 deg) to force a different path
-        # Try two different offsets to find a valid route
-        offsets = [(0.15, 0.15), (-0.15, -0.15), (0.15, -0.15)]
+        # We need more offsets to potentially find multiple routes
+        offsets = [(0.15, 0.15), (-0.15, -0.15), (0.15, -0.15), (-0.15, 0.15), (0.2, 0.0), (0.0, 0.2), (-0.2, 0.0), (0.0, -0.2), (0.25, 0.25)]
         
         for lat_offset, lon_offset in offsets:
+            if len(raw_routes) >= 3:
+                break
+            
             detour_point = {
                 "lat": mid_lat + lat_offset, 
                 "lon": mid_lon + lon_offset
@@ -476,7 +487,6 @@ def get_multiple_routes(src, dest, mode="driving-car", include_traffic=True):
                     if detour_route["distance"] < base_dist * 2.0:
                         print(f"Detour route found via offset ({lat_offset}, {lon_offset})")
                         raw_routes.append(detour_route)
-                        break 
             except Exception as e:
                 print(f"Detour generation failed: {e}")
                 continue

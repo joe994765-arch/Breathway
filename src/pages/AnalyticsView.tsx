@@ -165,16 +165,7 @@ const AnalyticsView = () => {
           </Card>
         </div>
 
-        <Card className="p-6 glass-card shadow-elevated">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">AQI Trends Over Time</h2>
-            <Button variant="outline" size="sm">
-              <Download className="h-4 w-4 mr-2" />
-              Export
-            </Button>
-          </div>
-          <Line data={lineChartData} options={chartOptions} />
-        </Card>
+
 
         <Card className="p-6 glass-card shadow-elevated">
           <h2 className="text-xl font-semibold mb-4">Pollution Intensity by Location</h2>

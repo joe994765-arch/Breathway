@@ -47,12 +47,12 @@ const AnalyticsDashboard = ({ userEmail }: AnalyticsDashboardProps) => {
                     const routes = historyResponse.routes;
 
                     // Calculate analytics
-                    const aqiValues = routes.map(route => route.averages.aqi);
-                    const tempValues = routes.map(route => route.averages.temperature);
-                    const windValues = routes.map(route => route.averages.wind_speed);
+                    const aqiValues = routes.map(route => route.averages?.aqi || 0).filter(aqi => aqi > 0);
+                    const tempValues = routes.map(route => route.averages?.temperature || 0).filter(temp => temp !== 0);
+                    const windValues = routes.map(route => route.averages?.wind_speed || 0).filter(wind => wind > 0);
 
-                    const totalDistance = routes.reduce((sum, route) => sum + route.route.distance, 0);
-                    const totalTime = routes.reduce((sum, route) => sum + route.route.duration, 0);
+                    const totalDistance = routes.reduce((sum, route) => sum + (route.route?.distance || 0), 0);
+                    const totalTime = routes.reduce((sum, route) => sum + (route.route?.duration || 0), 0);
 
                     // Calculate Cities Visited
                     const cities = new Set<string>();
@@ -84,17 +84,17 @@ const AnalyticsDashboard = ({ userEmail }: AnalyticsDashboardProps) => {
                     const highPollutionDays = aqiValues.filter(aqi => aqi > 100).length;
 
                     // Generate recommendations based on data
-                    const recommendations = generateRecommendations(aqiValues, tempValues, windValues);
+                    const recommendations = generateRecommendations(aqiValues.length > 0 ? aqiValues : [0], tempValues, windValues);
 
                     setAnalytics({
                         totalRoutes: routes.length,
-                        avgAQI: Math.round(aqiValues.reduce((sum, aqi) => sum + aqi, 0) / aqiValues.length),
-                        bestAQI: Math.min(...aqiValues),
-                        worstAQI: Math.max(...aqiValues),
+                        avgAQI: aqiValues.length > 0 ? Math.round(aqiValues.reduce((sum, aqi) => sum + aqi, 0) / aqiValues.length) : 0,
+                        bestAQI: aqiValues.length > 0 ? Math.min(...aqiValues) : 0,
+                        worstAQI: aqiValues.length > 0 ? Math.max(...aqiValues) : 0,
                         totalDistance: Math.round(totalDistance),
                         totalTime: Math.round(totalTime),
-                        avgTemperature: Math.round(tempValues.reduce((sum, temp) => sum + temp, 0) / tempValues.length),
-                        avgWindSpeed: Math.round(windValues.reduce((sum, wind) => sum + wind, 0) / windValues.length * 10) / 10,
+                        avgTemperature: tempValues.length > 0 ? Math.round(tempValues.reduce((sum, temp) => sum + temp, 0) / tempValues.length) : 0,
+                        avgWindSpeed: windValues.length > 0 ? Math.round(windValues.reduce((sum, wind) => sum + wind, 0) / windValues.length * 10) / 10 : 0,
                         pollutionTrend,
                         highPollutionDays,
                         recommendations,
